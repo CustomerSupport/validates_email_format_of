@@ -114,23 +114,24 @@ module ValidatesEmailFormatOf
     
     return false if parts.length <= 1 # Only one domain part
 
-    # Empty parts (double period) or invalid chars
-    return false if parts.any? { 
-      |part| 
-        part.nil? or 
-        part.empty? or 
-        not part =~ /\A[[:alnum:]\-]+\Z/ or
-        part[0,1] == '-' or part[-1,1] == '-' # hyphen at beginning or end of part
-    } 
-        
-    # ipv4
     if parts.length == 4 and parts[0][0] == '[' and parts[3][-1] == ']'
       parts[0] = parts[0][1..-1]
       parts[3] = parts[3][0..-2]
     end
 
     return true if parts.length == 4 and parts.all? { |part| part =~ /\A[0-9]+\Z/ and part.to_i.between?(0, 255) }
+
+    # Empty parts (double period) or invalid chars
+    return false if parts.any? {
+      |part|
+        part.nil? or
+        part.empty? or
+        not part =~ /\A[[:alnum:]\-]+\Z/ or
+        part[0,1] == '-' or part[-1,1] == '-' # hyphen at beginning or end of part
+    }
         
+    # ipv4
+
     return false if parts[-1].length < 2 or not parts[-1] =~ /[a-z\-]/ or parts[-1] == "web" # TLD is too short or does not contain a char or hyphen
     
     return true
