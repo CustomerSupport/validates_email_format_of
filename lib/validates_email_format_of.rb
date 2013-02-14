@@ -124,9 +124,14 @@ module ValidatesEmailFormatOf
     } 
         
     # ipv4
+    if parts.length == 4 and part[0][0] == '[' and part[3][-1] == ']'
+      parts[0] = parts[0][1..-1]
+      parts[1] = parts[1][1..-1]
+    end
+
     return true if parts.length == 4 and parts.all? { |part| part =~ /\A[0-9]+\Z/ and part.to_i.between?(0, 255) }
         
-    return false if parts[-1].length < 2 or not parts[-1] =~ /[a-z\-]/ # TLD is too short or does not contain a char or hyphen
+    return false if parts[-1].length < 2 or not parts[-1] =~ /[a-z\-]/ or parts[-1] == "web" # TLD is too short or does not contain a char or hyphen
     
     return true
   end
