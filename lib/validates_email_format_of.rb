@@ -124,7 +124,7 @@ module ValidatesEmailFormatOf
     } 
         
     # ipv4
-    if parts.length == 4 and part[0][0] == '[' and part[3][-1] == ']'
+    if parts.length == 4 and parts[0][0] == '[' and parts[3][-1] == ']'
       parts[0] = parts[0][1..-1]
       parts[1] = parts[1][1..-1]
     end
