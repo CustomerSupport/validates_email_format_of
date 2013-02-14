@@ -126,7 +126,7 @@ module ValidatesEmailFormatOf
     # ipv4
     if parts.length == 4 and parts[0][0] == '[' and parts[3][-1] == ']'
       parts[0] = parts[0][1..-1]
-      parts[1] = parts[1][1..-1]
+      parts[3] = parts[3][0..-2]
     end
 
     return true if parts.length == 4 and parts.all? { |part| part =~ /\A[0-9]+\Z/ and part.to_i.between?(0, 255) }
